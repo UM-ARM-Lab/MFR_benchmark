@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+
+<robot name="valve_on_wall">
+<link name="wall">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.0"/>
+      <mass value="10000.0"/>
+      <inertia ixx="1000.0" ixy="0.0" ixz="0.0" iyy="1000.0" iyz="0.0" izz="1000.0"/>
+    </inertial>
+    <!-- <visual>
+        <geometry>
+            <box size="0.3 0.1 0.1"/>
+        </geometry>
+           <material name="Purple1">
+	 	<color rgba="0.9 0. 0.9 1.0"/>
+	</material>
+    </visual> -->
+</link>
+
+<joint name="wall_valve_mount" type="revolute">
+    <parent link="wall"/>
+    <child link="valve"/>
+    <origin rpy="0 0 0" xyz="0 -0.151 0"/> 
+    <axis xyz="0 1 0"/>
+    <!-- <limit effort="300" lower="-2.9670597283903604" upper="2.9670597283903604" velocity="1.7453292519943295"/> -->
+    <dynamics damping="0.5"/>
+</joint>
+
+<link name="valve">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.03"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+    <visual>
+        <geometry>
+            <box size="0.04 0.2 0.04"/>
+        </geometry>
+           <material name="Red1">
+	 	<color rgba="0.9 0. 0. 0.5"/>
+	</material>
+    </visual>
+    <collision>
+        <geometry>
+            <box size="0.04 0.2 0.04"/>
+        </geometry>
+    </collision>
+</link>
+
+<!-- <joint name="valve_marker_mount" type="fixed">
+    <origin rpy="0.0 1.5707 0.0" xyz="0.0 0.0 +0.02"/>
+    <parent link="valve"/>
+    <child link="marker"/>
+</joint>
+
+<link name="marker">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.000001"/>
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0" izz="0.000001"/>
+    </inertial>
+    <visual>
+        <geometry>
+            <cylinder radius="0.005" length="0.1"/>
+        </geometry>
+           <material name="Blue">
+	 	<color rgba="0. 0. 0.9 0.5"/>
+	</material>
+    </visual>
+</link> -->
+
+</robot>

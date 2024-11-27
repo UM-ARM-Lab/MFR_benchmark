@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="mallet" params="prefix parent">
+
+  <joint name="${prefix}joint_ee" type="fixed">
+    <parent link="${parent}"/>
+    <child link="${prefix}link_ee"/>
+    <origin rpy="0 0 0" xyz="0 0 0.04"/>
+  </joint>
+  <link name="${prefix}link_ee">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+  <joint name="${prefix}striker" type="fixed">
+    <parent link="${prefix}link_ee"/>
+    <child link="${prefix}striker_base"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <link name="${prefix}striker_base">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.156"/>
+      <mass value="0.8"/>
+      <!--                <inertia ixx="0.000297" ixy="0.0" ixz="0.0"-->
+      <!--                         iyy="0.000271" iyz="0.0" izz="0.0000653"/>-->
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0.0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/striker/visual/EE_arm.stl" scale="1 1 0.25"/>
+      </geometry>
+      <material name="LightGrey"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/striker/collision/EE_arm_collision.stl" scale="1 1 0.25"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="${prefix}striker_joint_1" type="fixed">
+    <parent link="${prefix}striker_base"/>
+    <child link="${prefix}striker_joint_link"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.135"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="3.1415926"/>
+    <dynamics damping="0.01"/>
+  </joint>
+  <link name="${prefix}striker_joint_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="${prefix}striker_joint_2" type="fixed">
+    <parent link="${prefix}striker_joint_link"/>
+    <child link="${prefix}striker_mallet"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="10" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="3.1415926"/>
+    <dynamics damping="0.01"/>
+  </joint>
+  <link name="${prefix}striker_mallet">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.0 0.078"/>
+      <mass value="0.183"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0.0 0" xyz="0 0.0 0.0"/>
+      <geometry>
+        <!--                    <mesh filename="meshes/striker/visual/EE_mallet.stl"/>-->
+        <mesh filename="meshes/striker/visual/EE_mallet_short.stl"/>
+      </geometry>
+      <material name="LightGrey"/>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0" xyz="0 0.0 0.0"/>
+      <geometry>
+        <!--                    <mesh filename="meshes/striker/collision/EE_mallet_collision.stl"/>-->
+        <mesh filename="meshes/striker/collision/EE_mallet_short_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="${prefix}striker_mallet_fix" type="fixed">
+    <parent link="${prefix}striker_mallet"/>
+    <child link="${prefix}striker_mallet_tip"/>
+    <!--            <origin xyz="0.0 0.0 0.095" rpy="0 0 0"/>-->
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0505"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  <!--  The striker frame is here defined -->
+  <link name="${prefix}striker_mallet_tip">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  </xacro:macro>
+</robot>

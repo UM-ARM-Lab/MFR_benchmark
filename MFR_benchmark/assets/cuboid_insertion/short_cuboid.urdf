@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+
+<robot name="cuboid">
+<link name="world">
+    <inertial>
+      <mass value="10000.0"/>
+      <!-- <inertia ixx="1000.0" ixy="0.0" ixz="0.0" iyy="1000.0" iyz="0.0" izz="1000.0"/> -->
+    </inertial>
+</link>
+
+<joint name="world_joint_1" type="prismatic">
+    <parent link="world"/>
+    <child link="virtual_link_1"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="1 0 0"/>
+    <limit effort="10" lower="-0.5" upper="0.5" velocity="0.5"/>
+</joint>
+
+<link name="virtual_link_1">
+    <inertial>
+      <mass value="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="world_joint_2" type="prismatic">
+    <parent link="virtual_link_1"/>
+    <child link="virtual_link_2"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-0.5" upper="0.5" velocity="0.5"/>
+</joint>
+
+<link name="virtual_link_2">
+    <inertial>
+      <mass value="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="world_joint_3" type="prismatic">
+    <parent link="virtual_link_2"/>
+    <child link="virtual_link_3"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-0.7" upper="1." velocity="0.5"/>
+</joint>
+
+<link name="virtual_link_3">
+    <inertial>
+      <mass value="0.000001"/>
+    </inertial>
+</link>
+
+
+<joint name="world_joint_4" type="revolute">
+    <parent link="virtual_link_3"/>
+    <child link="virtual_link_4"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="1 0 0"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.5"/>
+</joint>
+
+<link name="virtual_link_4">
+    <inertial>
+      <mass value="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="world_joint_5" type="revolute">
+    <parent link="virtual_link_4"/>
+    <child link="virtual_link_5"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.5"/>
+</joint>
+
+<link name="virtual_link_5">
+    <inertial>
+      <mass value="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="world_joint_6" type="revolute">
+    <parent link="virtual_link_5"/>
+    <child link="cuboid"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-3" upper="3" velocity="0.5"/>
+</joint>
+
+
+<link name="cuboid">
+    <inertial>
+      <mass value="0.01"/>
+    </inertial>
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+            <box size='0.04 0.04 0.1'/>
+        </geometry>
+        <material name="Red1">
+	 	    <color rgba="0.9 0. 0. 0.5"/>
+        </material>
+    </visual>
+    <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.0"/>
+        <geometry>
+            <box size='0.04 0.04 0.1'/>
+        </geometry>
+    </collision>
+</link>
+</robot>

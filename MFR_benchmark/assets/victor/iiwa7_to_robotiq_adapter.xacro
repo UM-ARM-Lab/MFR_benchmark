@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="robotiq-3f-gripper_articulated_basic.urdf.xacro"/>
+
+    <xacro:robotiq_hand prefix="l_" parent="$(arg robot_name)_left_gripper_mounting_bracket">
+        <origin xyz="0 0 0.07" rpy="${PI/2} 0 ${PI/4}"/>
+    </xacro:robotiq_hand>
+
+    <xacro:robotiq_hand prefix="r_" parent="$(arg robot_name)_right_gripper_mounting_bracket">
+        <origin xyz="0 0 0.07" rpy="${PI/2} 0 ${PI/4}"/>
+    </xacro:robotiq_hand>
+
+
+</robot>

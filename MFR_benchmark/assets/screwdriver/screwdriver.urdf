@@ -1,0 +1,168 @@
+<?xml version="1.0" ?>
+
+<robot name="screwdriver_on_the_table">
+<link name="table">
+    <inertial>
+      <mass value="10000.0"/>
+      <inertia ixx="1000.0" ixy="0.0" ixz="0.0" iyy="1000.0" iyz="0.0" izz="1000.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 -0.025"/>
+        <geometry>
+            <box size="0.2 0.2 0.01"/>
+        </geometry>
+           <material name="Purple1">
+	 	<color rgba="0.9 0. 0.9 1.0"/>
+	</material>
+    </visual>
+</link>
+
+<!-- <joint name="table_screwdriver_joint" type="spherical">
+    <parent link="table"/>
+    <child link="screwdriver_stick"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 0 1"/>
+</joint> -->
+
+<joint name="table_screwdriver_joint_1" type="revolute">
+    <parent link="table"/>
+    <child link="vitrual_link_1"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="1 0 0"/>
+    <limit effort="10" lower="-1.57" upper="1.57" velocity="0.5"/>
+</joint>
+
+<link name="vitrual_link_1">
+    <inertial>
+      <mass value="0.0000001"/>
+      <inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0" izz="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="table_screwdriver_joint_2" type="revolute">
+    <parent link="vitrual_link_1"/>
+    <child link="vitrual_link_2"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-1.57" upper="1.57" velocity="0.5"/>
+</joint>
+
+<link name="vitrual_link_2">
+    <inertial>
+      <mass value="0.0000001"/>
+      <inertia ixx="0.000001" ixy="0.0" ixz="0.0" iyy="0.000001" iyz="0.0" izz="0.000001"/>
+    </inertial>
+</link>
+
+<joint name="table_screwdriver_joint_3" type="revolute">
+    <parent link="vitrual_link_2"/>
+    <child link="screwdriver_stick"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 0 1"/>
+</joint>
+
+<link name="screwdriver_stick">
+    <inertial>
+      <mass value="0.05"/>
+      <!-- <friction value="1.0"/> -->
+      <!-- <inertia ixx="0.000041979" ixy="0.0" ixz="0.0" iyy="0.000041979" iyz="0.0" izz="0.000000625"/> -->
+    </inertial>
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        <geometry>
+            <cylinder radius="0.005" length="0.1"/>
+        </geometry>
+        <material name="White">
+	 	    <color rgba="0.9 0.9 0.9 0.5"/>
+        </material>
+    </visual>
+    <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        <geometry>
+            <cylinder radius="0.005" length="0.1"/>
+        </geometry>
+    </collision>
+</link>
+
+<joint name="screwdriver_stick_body_joint" type="fixed">
+    <parent link="screwdriver_stick"/>
+    <child link="screwdriver_body"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/> 
+    <axis xyz="0 0 1"/>
+</joint>
+
+<link name="screwdriver_body">
+    <inertial>
+      <mass value="0.3"/>
+      <!-- <inertia ixx="0.00019667" ixy="0.0" ixz="0.0" iyy="0.00019667" iyz="0.0" izz="0.00006"/> -->
+    </inertial>
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        <geometry>
+            <cylinder radius="0.02" length="0.1"/>
+        </geometry>
+        <material name="Red1">
+	 	    <color rgba="0.9 0. 0. 0.5"/>
+        </material>
+    </visual>
+    <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.05"/>
+        <geometry>
+            <cylinder radius="0.02" length="0.1"/>
+        </geometry>
+    </collision>
+</link>
+
+<joint name="screwdriver_body_cap_joint" type="revolute">
+    <parent link="screwdriver_body"/>
+    <child link="screwdriver_cap"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/> 
+    <axis xyz="0 0 1"/>
+</joint>
+
+<link name="screwdriver_cap">
+    <inertial>
+      <mass value="0.005"/>
+      <!-- <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.000005" iyz="0.0" izz="0.000005"/> -->
+    </inertial>
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.0005"/>
+        <geometry>
+            <cylinder radius="0.02" length="0.001"/>
+        </geometry>
+        <material name="Yellow">
+	 	    <color rgba="0.9 0.9 0. 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.0005"/>
+        <geometry>
+            <cylinder radius="0.02" length="0.001"/>
+        </geometry>
+    </collision>
+</link>
+
+<joint name="screwdriver_body_marker_joint" type="fixed">
+    <parent link="screwdriver_body"/>
+    <child link="marker"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/> 
+    <axis xyz="0 0 1"/>
+</joint>
+
+<link name="marker">
+    <inertial>
+      <mass value="0.00001"/>
+      <!-- <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/> -->
+    </inertial>
+    <visual>
+        <origin rpy="1.57 0 0" xyz="0 0 0"/>
+        <geometry>
+            <cylinder radius="0.005" length="0.1"/>
+        </geometry>
+        <material name="Blue">
+	 	    <color rgba="0 0 0.9 1.0"/>
+        </material>
+    </visual>
+</link>
+
+</robot>
