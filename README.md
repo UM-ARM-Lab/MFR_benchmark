@@ -8,6 +8,9 @@ Install via `pip install -e` .
 Dependencies:
 - PyTorch
 - Isaac Gym (https://developer.nvidia.com/isaac-gym)
+- pytorch kinematics (https://github.com/UM-ARM-Lab/pytorch_kinematics)
+- mujoco
+- gym
 
 ## overview
 This repository provides a Multi-Finger Dexterous Manipulation Benchmark for robotic hand environments, utilizing NVIDIA IsaacGym for physics simulation. The benchmark is designed to evaluate dexterous manipulation tasks such as valve turning, cuboid insertion, screwdriver turning, and object reorientation, among others. These tasks are implemented with the Allegro robotic hand and optional arm configurations.
