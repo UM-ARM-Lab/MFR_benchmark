@@ -101,7 +101,6 @@ class AllegroEnv:
             self.robot_dof = 6 + 4 * self.num_fingers
             self.arm_dof = 6
 
-        # TODO have a config file?
         sim_params = gymapi.SimParams()
         sim_params.dt = 1. / 60
         sim_params.substeps = 1
@@ -332,24 +331,7 @@ class AllegroEnv:
         self._q = self.dof_states[..., 0]
         self._qd = self.dof_states[..., 1]
 
-        # ft sensor
-        # self._ft_data = self.gym.acquire_force_sensor_tensor(self.sim)
-        # self.ft_data = gymtorch.wrap_tensor(self._ft_data)
-
-        # joint force
-        # self._forces = self.gym.acquire_dof_force_tensor(self.sim)
-        # self.forces = gymtorch.wrap_tensor(self._forces)
-
-        # jacobian
-        # self._jacobian = self.gym.acquire_jacobian_tensor(self.sim, 'allegro')
-        # self.jacobian = gymtorch.wrap_tensor(self._jacobian)
-        # self._jacobian_thumb = self.jacobian
-        # self.J_ee = self.jacobian[:, self.ee_index - 1, :, :7]
-        # self.J_ee = torch.cat((self.jacobian[:, self.ee_index - 1, :, :7], self.jacobian[:, self.ee_index - 1, :, 14:18]), dim=-1)
-
         self._massmatrix = self.gym.acquire_mass_matrix_tensor(self.sim, 'allegro')
-        # self.M = gymtorch.wrap_tensor(self._massmatrix)
-        # self.M = self.M[:, :7, :7]
 
     def reset(self, env_idx=None):
         num_actors = self.actor_rb_states.shape[1]
@@ -372,16 +354,9 @@ class AllegroEnv:
             robot_ids = global_indices[:, self.handles['allegro'][0]].contiguous()
         else:
             robot_ids = global_indices[env_idx, self.handles['allegro'][0]].contiguous()
-        # obj_ids = global_indices[:, self.handles['valve'][0]].contiguous()
-        # update
 
         self.gym.set_dof_state_tensor(self.sim, gymtorch.unwrap_tensor(self.dof_states))
 
-        # rval = self.gym.set_dof_state_tensor_indexed(self.sim,
-        #                                      gymtorch.unwrap_tensor(self.dof_states),
-        #                                      gymtorch.unwrap_tensor(robot_ids),
-        #                                      self.num_envs
-        #                                      )
         self.gym.set_dof_position_target_tensor_indexed(self.sim,
                                                         gymtorch.unwrap_tensor(default_dof_pos),
                                                         gymtorch.unwrap_tensor(robot_ids),
@@ -483,22 +458,6 @@ class AllegroEnv:
             # add palm movement
             des_q[:, :self.arm_dof] = actions[:, :self.arm_dof]
             des_q = torch.cat((des_q, self._q[:, (16+self.arm_dof):]), dim=-1)
-            if self.contact_controller:
-                # TODO hardcoded for now
-                sin_valve = torch.sin(self._q[:, -1] + np.pi / 2)
-                cos_valve = torch.cos(self._q[:, -1] + np.pi / 2)
-                thumb_normal_vector = -torch.stack(
-                    (sin_valve, torch.zeros_like(sin_valve), cos_valve), dim=-1)
-                index_normal_vector = thumb_normal_vector
-
-                normal_vectors = torch.stack((thumb_normal_vector, index_normal_vector), dim=1)
-
-                new_torque = self._contact_controller(des_q - self._q, normal_vectors)
-
-                print('old des q', des_q)
-
-                des_q[:, :16] = self._q[:, :16] + new_torque / self.joint_stiffness
-                print('new des q', des_q)
 
         if torques is not None:
             torques = torch.zeros((self.num_envs, 16)).float().to(self.device)
@@ -546,12 +505,6 @@ class AllegroEnv:
                 if not ignore_img:
                     self.gym.write_viewer_image_to_file(self.viewer, f'{self.frame_fpath}/frame_{self.frame_id:06d}.png')
                     self.frame_id += 1
-        # contact_forces = self.gym.acquire_net_contact_force_tensor(self.sim)
-        # breakpoint()
-
-        # J = self.chain.jacobian(self._q[:, :7].reshape(-1, 7))
-        # print(self._q)
-        # print(actions - self.get_state())
         return self.get_state()
 
     def get_state(self):
